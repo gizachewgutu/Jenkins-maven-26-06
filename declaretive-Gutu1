@@ -5,7 +5,7 @@ pipeline {
         stage('compile') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/gizachewgutu/Jenkins-maven-26-06-ethiopia.git'
+                
 
                 // Run Maven on a Unix agent.
                 sh "mvn compile"
