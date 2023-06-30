@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "mvn_home"
+        jdk "Java-home"
+    }
+
+    stages {
+        stage('compile') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/gizachewgutu/Jenkins-maven-26-06-ethiopia.git'
+
+                // Run Maven on a Unix agent.
+                sh "mvn compile"
+
+                // To run Maven on a Windows agent, use
+                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+        }
+         stage('codeReview') {
+            steps {
+                sh "mvn pmd:pmd"
+          }
+         }
+          stage('UnitTest') {
+            steps {
+                sh "mvn test"
+          }
+         }
+           stage('Metriccheck') {
+            steps {
+                sh "mvn cobertura:cobertura -Dcoberture.report.format=xml"
+          }
+         }
+           stage('Package') {
+            steps {
+                sh "mvn package"
+          }
+         }     
+
+        }
+    }
+
